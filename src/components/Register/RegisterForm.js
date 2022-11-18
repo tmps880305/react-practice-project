@@ -1,4 +1,4 @@
-import React, {useState, Fragment} from 'react';
+import React, {useState, Fragment, useRef} from 'react';
 
 import classes from './RegisterForm.module.css'
 import Card from '../UI/Card'
@@ -7,27 +7,18 @@ import ErrorModal from '../UI/ErrorModal'
 
 const RegisterForm = (props) => {
 
-    const [addUser, setAddUser] = useState({name: '', age: ''});
+    const nameInputRef = useRef();
+    const ageInputRef = useRef();
+
     const [errSate, setErrState] = useState();
-
-    const nameInputHanadler = event => {
-        setAddUser((preState) => {
-            return {...preState, name: event.target.value};
-        })
-    };
-
-    const ageInputHanadler = event => {
-        setAddUser((preState) => {
-            return {
-                ...preState, age: event.target.value
-            };
-        })
-    };
 
     const submitHandler = event => {
         event.preventDefault();
 
-        if (addUser.name.trim().length === 0 || addUser.age.trim().length === 0) {
+        const enteredName = nameInputRef.current.value;
+        const enteredAge = ageInputRef.current.value;
+
+        if (enteredName.trim().length === 0 || enteredAge.trim().length === 0) {
             setErrState({
                 title: 'Invalid name or age.',
                 message: 'Please enter correct name and age (not empty).'
@@ -35,7 +26,7 @@ const RegisterForm = (props) => {
             return;
         }
 
-        if (+addUser.age < 1) {
+        if (+enteredAge < 1) {
             setErrState({
                 title: 'Invalid age.',
                 message: 'Please enter correct age (>0).'
@@ -43,8 +34,15 @@ const RegisterForm = (props) => {
             return;
         }
 
-        props.onAddUser(addUser);
-        setAddUser({name: '', age: ''});
+        props.onAddUser({name: enteredName, age: enteredAge});
+
+        // setAddUser({name: '', age: ''});
+
+        /* Careful: NOT GOOD to manipulate ref dom like this! */
+        nameInputRef.current.value = '';
+        ageInputRef.current.value = '';
+
+
     };
 
     const cancelHandler = () => {
@@ -57,9 +55,9 @@ const RegisterForm = (props) => {
             <Card className={classes.input}>
                 <form onSubmit={submitHandler}>
                     <label>Username</label>
-                    <input type="text" value={addUser.name} onChange={nameInputHanadler}/>
+                    <input type="text" ref={nameInputRef}/>
                     <label>Age (Years)</label>
-                    <input type="number" value={addUser.age} onChange={ageInputHanadler}/>
+                    <input type="number" ref={ageInputRef}/>
                     <Button type="submit">Add User</Button>
                 </form>
             </Card>

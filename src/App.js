@@ -3,16 +3,9 @@ import React, {useState} from 'react';
 import RegisterUser from './components/Register/RegisterUser'
 import Users from './components/User/Users'
 
-const INITIAL_USERS = [
-    {
-        id: 'u1',
-        name: 'Max',
-        age: 31,
-    }
-];
 
 function App() {
-    const [users, setUsers] = useState(INITIAL_USERS);
+    const [users, setUsers] = useState([]);
 
     const registerUserHandler = registeredUser => {
         setUsers(preState => {

@@ -1,8 +1,14 @@
 import React, {useState} from 'react';
 
+import classes from './RegisterForm.module.css'
+import Card from '../UI/Card'
+import Button from '../UI/Button'
+import ErrorModal from '../UI/ErrorModal'
+
 const RegisterForm = (props) => {
 
     const [addUser, setAddUser] = useState({name: '', age: ''});
+    const [errSate, setErrState] = useState();
 
     const nameInputHanadler = event => {
         setAddUser((preState) => {
@@ -21,9 +27,19 @@ const RegisterForm = (props) => {
     const submitHandler = event => {
         event.preventDefault();
 
-        if (addUser.name === '' || addUser.age === '') {
-            console.log('Invalid input');
-            setAddUser({name: '', age: ''});
+        if (addUser.name.trim().length === 0 || addUser.age.trim().length === 0) {
+            setErrState({
+                title: 'Invalid name or age.',
+                message: 'Please enter correct name and age (not empty).'
+            });
+            return;
+        }
+
+        if (+addUser.age < 1) {
+            setErrState({
+                title: 'Invalid age.',
+                message: 'Please enter correct age (>0).'
+            });
             return;
         }
 
@@ -31,24 +47,23 @@ const RegisterForm = (props) => {
         setAddUser({name: '', age: ''});
     };
 
+    const cancelHandler = () => {
+        setErrState(null);
+    };
+
     return (
-        <form onSubmit={submitHandler}>
-            <div>
-                <label>Username</label>
-            </div>
-            <div>
-                <input type="text" value={addUser.name} onChange={nameInputHanadler}/>
-            </div>
-            <div>
-                <label>Age (Years)</label>
-            </div>
-            <div>
-                <input type="number" min='0' step='1' value={addUser.age} onChange={ageInputHanadler}/>
-            </div>
-            <div>
-                <button type="submit">Add User</button>
-            </div>
-        </form>
+        <div>
+            {errSate && <ErrorModal title={errSate.title} message={errSate.message} onCanceled={cancelHandler}/>}
+            <Card className={classes.input}>
+                <form onSubmit={submitHandler}>
+                    <label>Username</label>
+                    <input type="text" value={addUser.name} onChange={nameInputHanadler}/>
+                    <label>Age (Years)</label>
+                    <input type="number" value={addUser.age} onChange={ageInputHanadler}/>
+                    <Button type="submit">Add User</Button>
+                </form>
+            </Card>
+        </div>
     );
 
 };

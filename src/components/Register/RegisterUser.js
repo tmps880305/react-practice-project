@@ -1,7 +1,5 @@
 import React from 'react';
 
-import Card from '../UI/Card'
-import './Register.css'
 import RegisterForm from './RegisterForm'
 
 const RegisterUser = (props) => {
@@ -17,9 +15,7 @@ const RegisterUser = (props) => {
     };
 
     return (
-        <Card className="register">
-            <RegisterForm onAddUser={addUserHandler}/>
-        </Card>
+        <RegisterForm onAddUser={addUserHandler}/>
     );
 
 };

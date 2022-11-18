@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 
-import RegisterUser from './components/Register/RegisterUser'
-import Users from './components/User/Users'
-
+import RegisterUser from './components/Register/RegisterUser';
+import Users from './components/User/Users';
+import Wrapper from './components/Helpers/Wrapper';
 
 function App() {
     const [users, setUsers] = useState([]);
@@ -14,10 +14,10 @@ function App() {
     };
 
     return (
-        <div>
+        <Wrapper>
             <RegisterUser onRegisterUser={registerUserHandler}/>
             <Users items={users}/>
-        </div>
+        </Wrapper>
     );
 }
 

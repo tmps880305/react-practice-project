@@ -1,10 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, Fragment} from 'react';
 
 import classes from './RegisterForm.module.css'
 import Card from '../UI/Card'
 import Button from '../UI/Button'
 import ErrorModal from '../UI/ErrorModal'
-import Wrapper from '../Helpers/Wrapper'
 
 const RegisterForm = (props) => {
 
@@ -53,7 +52,7 @@ const RegisterForm = (props) => {
     };
 
     return (
-        <Wrapper>
+        <Fragment>
             {errSate && <ErrorModal title={errSate.title} message={errSate.message} onCanceled={cancelHandler}/>}
             <Card className={classes.input}>
                 <form onSubmit={submitHandler}>
@@ -64,7 +63,7 @@ const RegisterForm = (props) => {
                     <Button type="submit">Add User</Button>
                 </form>
             </Card>
-        </Wrapper>
+        </Fragment>
     );
 
 };
